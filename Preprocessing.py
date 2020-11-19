@@ -11,6 +11,7 @@ def plot_digit(Xrow):
     image = Xrow.reshape(100, 100)
     plt.imshow(image, cmap = mpl.cm.binary)
     plt.axis("off")
+    plt.show()
     
     
 def plot_digits(instances, images_per_row = 3, **options):
@@ -42,3 +43,4 @@ def plot_digits(instances, images_per_row = 3, **options):
     image = np.concatenate(row_images, axis = 0)
     plt.imshow(image, cmap = mpl.cm.binary, **options)
     plt.axis("off")
+    plt.show()
