@@ -9,7 +9,7 @@ def plot_digit(Xrow):
     """ 
     Plot a single picture
     """
-    size = int(np.sqrt(Xrow.shape[1]))
+    size = int(np.sqrt(Xrow.shape[-1]))
     image = Xrow.reshape(size, size)
     plt.imshow(image, cmap = mpl.cm.binary)
     plt.axis("off")
@@ -23,7 +23,7 @@ def plot_digits(instances, images_per_row = 3, **options):
     Parameters
     ----------
     instances : ndarray
-        Instances in the data one wants to plot
+        Instances in the data one wants to plot.
     images_per_row : int, optional
         The default is 3.
     **options : Dict
@@ -50,7 +50,10 @@ def plot_digits(instances, images_per_row = 3, **options):
     
     
 def crop_images(instances, reduce = 1):
-    
+    """
+    Reduce sizes of Images by removing "reduce" pixels
+    on each edge
+    """
     nsize = int( np.sqrt(instances.shape[1]) )
     reduce_size = nsize - 2 * reduce
     cropped = np.zeros((instances.shape[0], reduce_size ** 2) , dtype = 'u1')
@@ -73,7 +76,7 @@ def reverse_images(instances):
     Returns
     -------
     flipped : ndarray
-        Flipped images
+        Flipped images.
 
     """
     flipped = instances.copy()
@@ -86,7 +89,26 @@ def reverse_images(instances):
 
 
 def translate_images(instances, all_delta_i, all_delta_j):
-    
+    """
+    Translate each images in specified directions
+
+    Parameters
+    ----------
+    instances : ndarray
+        Images to be reversed horizontally, one image per row.
+    all_delta_i : list
+        List of translations over the first index.
+    all_delta_j : list
+        List of translations over the second index.
+    Returns
+    -------
+    translates : ndarray
+        Translated images
+
+    """
+    if not len(all_delta_i) == len(all_delta_j):
+        raise ValueError("The size of the two lists must match")
+
     nimages = instances.shape[0]
     nsize = int( np.sqrt(instances.shape[1]) )
     translated = np.zeros( (len(all_delta_i) * nimages, 
